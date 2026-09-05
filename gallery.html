@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ID&UB | Shared Gallery</title>
+  <link rel="icon" type="image/png" href="idub-favicon.png">
+  <meta name="description"
+    content="Browse and share wedding moments from the traditional marriage, marriage blessing, and reception.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=Great+Vibes&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="index.css">
+  <link rel="stylesheet" href="gallery.css">
+</head>
+
+<body class="gallery-page">
+  <header class="floating-header">
+    <div class="header__inner">
+      <a class="brand" href="index.html#top" aria-label="Wedding website for Idongesit and Ubong">ID&UB</a>
+      <nav class="header__nav" aria-label="Primary">
+        <a class="nav-link" href="index.html">Home</a>
+        <a class="nav-link nav-link--accent" href="index.html#rsvp">RSVP</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="gallery-main">
+    <section class="gallery-shell section">
+      <div class="gallery-intro">
+        <p class="eyebrow">Gallery</p>
+        <h1>Wedding Moments</h1>
+        <p class="gallery-intro__subtext" id="uploadLimitText">This browser can upload up to 15 photos.</p>
+      </div>
+
+      <div class="gallery-content">
+        <div class="gallery-toolbar">
+          <div class="gallery-toolbar__filters">
+            <label class="visually-hidden" for="searchInput">Search by uploader name</label>
+            <input type="search" id="searchInput" placeholder="Search by guest name">
+
+            <label class="visually-hidden" for="eventFilter">Filter by event</label>
+            <select id="eventFilter">
+              <option value="all">All Events</option>
+              <option value="traditional-marriage">TM</option>
+              <option value="marriage-blessing">Blessing</option>
+              <option value="reception">Reception</option>
+            </select>
+          </div>
+
+          <div class="gallery-toolbar__actions">
+            <button type="button" class="icon-btn icon-btn--upload" id="openUploadBtn" aria-label="Upload photos"
+              title="Upload photos">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                stroke-linejoin="round" focusable="false" aria-hidden="true">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+              </svg>
+              <span class="icon-btn__text">Upload</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="gallery-meta standalone-meta">
+          <p class="gallery-count" id="galleryCount">Loading photos...</p>
+          <button type="button" class="icon-btn icon-btn--small" id="refreshGalleryBtn" aria-label="Refresh gallery"
+            title="Refresh gallery">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+              stroke-linejoin="round" focusable="false" aria-hidden="true">
+              <path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8"></path>
+              <path d="M21 3v5h-5"></path>
+            </svg>
+          </button>
+        </div>
+
+        <div class="gallery-setup" id="gallerySetup" hidden>
+          <p>
+            Cloudinary still needs one more setting before the gallery can load photos. Check the resource list access
+            for this cloud.
+          </p>
+        </div>
+
+        <p class="gallery-status visually-hidden" id="galleryStatus" aria-live="polite">Preparing the gallery...</p>
+
+        <div class="gallery-grid" id="galleryGrid" aria-live="polite"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>ID&amp;UB &bull; Shared wedding gallery &bull; With love and gratitude</p>
+    <p>Thank you Most Gracious Father</p>
+  </footer>
+
+  <div class="upload-modal" id="uploadModal" hidden>
+    <div class="upload-modal__backdrop" id="uploadModalBackdrop"></div>
+    <div class="upload-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="uploadModalTitle">
+      <button type="button" class="upload-modal__close" id="closeUploadModal" aria-label="Close upload form">
+        &times;
+      </button>
+
+      <p class="eyebrow">Before You Upload</p>
+      <h2 id="uploadModalTitle">Add your details first.</h2>
+      <p class="upload-modal__intro">
+        Your name tags the photos you upload, and the event selection powers the gallery filters.
+      </p>
+
+      <form id="uploadDetailsForm" class="upload-form">
+        <div class="form-group">
+          <label for="uploaderName">Your Name</label>
+          <input type="text" id="uploaderName" name="uploaderName" required placeholder="Enter your name">
+        </div>
+
+        <div class="form-group">
+          <label for="uploadEvent">Event</label>
+          <select id="uploadEvent" name="uploadEvent" required>
+            <option value="" disabled selected>Select the event</option>
+            <option value="traditional-marriage">Traditional Marriage</option>
+            <option value="marriage-blessing">Marriage Blessing</option>
+            <option value="reception">Reception</option>
+          </select>
+        </div>
+
+        <p class="upload-form__note" id="uploadFormNote">
+          Each browser can upload up to 15 photos in total for this gallery.
+        </p>
+
+        <div class="upload-form__actions">
+          <button type="submit" class="btn">Continue to Upload</button>
+          <button type="button" class="btn btn--ghost" id="cancelUploadBtn">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="lightbox" id="lightbox" hidden>
+    <div class="lightbox__backdrop" id="lightboxBackdrop"></div>
+    <div class="lightbox__dialog" role="dialog" aria-modal="true" aria-labelledby="lightboxTitle">
+      <div class="lightbox__topbar">
+        <div class="lightbox__meta">
+          <p class="lightbox__title" id="lightboxTitle">Photo</p>
+          <p class="lightbox__subtitle" id="lightboxSubtitle">Swipe left or right to view others.</p>
+        </div>
+        <div class="lightbox__actions">
+          <a class="lightbox__action" id="lightboxDownload" href="#" target="_blank" rel="noopener noreferrer"
+            aria-label="Download photo">
+            <svg viewBox="0 0 24 24" focusable="false">
+              <path d="M12 4v9m0 0l-4-4m4 4l4-4M5 18h14" stroke="currentColor" stroke-width="2" fill="none"
+                stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </a>
+          <button type="button" class="lightbox__action" id="closeLightbox" aria-label="Close photo viewer">
+            <svg viewBox="0 0 24 24" focusable="false">
+              <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"
+                stroke-linejoin="round" />
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="lightbox__frame" id="lightboxFrame">
+        <button type="button" class="lightbox__nav lightbox__nav--prev" id="prevPhotoBtn" aria-label="Previous photo">
+          &#8249;
+        </button>
+        <img src="" alt="" id="lightboxImage" class="lightbox__image">
+        <button type="button" class="lightbox__nav lightbox__nav--next" id="nextPhotoBtn" aria-label="Next photo">
+          &#8250;
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://upload-widget.cloudinary.com/latest/global/all.js"></script>
+  <script src="gallery.js"></script>
+</body>
+
+</html>
